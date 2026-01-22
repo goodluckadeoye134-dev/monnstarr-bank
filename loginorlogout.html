@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monnstarr Bank - Dashboard</title>
+<style>
+  body { font-family: Arial, sans-serif; background: linear-gradient(135deg,#3b1c5a,#0b1c3d); color: #fff; min-height:100vh; margin:0; }
+  header { background: rgba(0,0,0,0.25); padding:20px 40px; display:flex; justify-content:space-between; align-items:center; }
+  header h1 { color:#b58cff; }
+  nav a { color:#e6ddff; margin-left:20px; text-decoration:none; font-weight:500; }
+  nav a.logout { background:#9b6dff; padding:6px 14px; border-radius:6px; cursor:pointer; }
+  .container { padding:40px; text-align:center; }
+  .card { background: rgba(255,255,255,0.1); padding:25px; border-radius:16px; box-shadow:0 10px 20px rgba(0,0,0,0.3); display:inline-block; margin-top:20px; }
+  .btn { padding:10px 20px; background: linear-gradient(135deg,#7a4dff,#4f6bff); border:none; border-radius:12px; color:#fff; cursor:pointer; margin-top:10px; }
+  .btn:hover { opacity:0.9; }
+  img.profile-img { width:50px; height:50px; border-radius:50%; vertical-align:middle; margin-left:10px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Monnstarr Bank</h1>
+  <nav>
+    <a href="#">Dashboard</a>
+    <a href="profile.html">Profile</a>
+    <a href="#" class="logout" onclick="logout()">Logout</a>
+    <img src="" id="headerPic" class="profile-img" alt="Profile">
+  </nav>
+</header>
+
+<div class="container">
+
+  <!-- Message if user is not logged in -->
+  <div class="card" id="notLoggedIn" style="display:none;">
+    <h2>Please login to access your dashboard</h2>
+    <a href="index.html"><button class="btn">Go to Login</button></a>
+  </div>
+
+  <!-- Dashboard content -->
+  <div id="dashboardContent" style="display:none;">
+    <div class="card">
+      <h2>Welcome, <span id="userName"></span>!</h2>
+      <p>Main Balance: $<span id="mainBalance">0</span></p>
+      <p>Savings: $<span id="savings">0</span></p>
+      <button class="btn" onclick="alert('Send Money Clicked')">Send Money</button>
+      <button class="btn" onclick="alert('Receive Money Clicked')">Receive Money</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Minimal JS just to switch HTML sections
+  let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+  if(currentUser){
+    document.getElementById("dashboardContent").style.display = "block";
+    document.getElementById("userName").innerText = currentUser.name;
+    document.getElementById("headerPic").src = currentUser.pic || "https://via.placeholder.com/50";
+
+    // For demo: balances
+    document.getElementById("mainBalance").innerText = localStorage.getItem("balance") || 5000;
+    document.getElementById("savings").innerText = localStorage.getItem("savings") || 1000;
+  } else {
+    document.getElementById("notLoggedIn").style.display = "block";
+    document.getElementById("dashboardContent").style.display = "none";
+  }
+
+  function logout(){
+    localStorage.removeItem("currentUser");
+    window.location.href="login.html";
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monnstarr Bank - Dashboard</title>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; font-family:Arial, Helvetica, sans-serif; }
+  body { background: linear-gradient(135deg,#3b1c5a,#0b1c3d); color:#fff; min-height:100vh; }
+
+  header { background: rgba(0,0,0,0.25); backdrop-filter: blur(6px); padding:20px 40px; display:flex; justify-content:space-between; align-items:center; }
+  header h1 { color:#b58cff; }
+  nav a { color:#e6ddff; margin-left:20px; text-decoration:none; font-weight:500; }
+  nav a:hover { color:#fff; }
+  nav a.logout { background:#9b6dff; padding:6px 14px; border-radius:6px; }
+
+  .container { padding:40px; display:grid; grid-template-columns: 2fr 1fr; gap:30px; }
+  @media(max-width:900px){ .container { grid-template-columns:1fr; } }
+
+  .card { background: rgba(255,255,255,0.1); border-radius:16px; padding:25px; margin-bottom:20px; box-shadow:0 10px 20px rgba(0,0,0,0.3); }
+  .card h3 { margin-bottom:15px; color:#d6c4ff; }
+  .balance { font-size:2rem; margin-bottom:15px; }
+  .btn { padding:10px 20px; background: linear-gradient(135deg, #7a4dff,#4f6bff); border:none; border-radius:12px; color:#fff; cursor:pointer; margin-right:10px; }
+  .btn:hover { opacity:0.9; }
+
+  .transactions { max-height:300px; overflow-y:auto; }
+  .transaction { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.2); }
+  .transaction:last-child { border:none; }
+
+  .sidebar { display:flex; flex-direction:column; gap:20px; }
+  .sidebar .card button { width:100%; text-align:left; }
+
+  footer { text-align:center; padding:20px; font-size:0.9rem; color:#cfc7ff; margin-top:40px; }
+
+  input, select { padding:10px; border-radius:8px; border:none; outline:none; width:100%; margin-bottom:10px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Monnstarr Bank</h1>
+  <nav>
+    <a href="">Dashboard</a>
+    <a href="">Accounts</a>
+    <a href="">Payments</a>
+    <a href="#">Support</a>
+    
+    <a href="index.html" class="logout" onclick="logout()">Logout</a>
+  </nav>
+</header>
+
+<div class="container">
+  <!-- Main Section -->
+  <div>
+    <div class="card">
+      <h3>Welcome, <span id="userName"></span>!</h3>
+      <div class="balance" id="mainBalance">$1</div>
+      <button class="btn" onclick="showSendPayment()">Send Money</button>
+      <button class="btn" onclick="showReceivePayment()">Receive Money</button>
+
+    </div>
+
+    <!-- Transaction History -->
+    <div class="card">
+      <h3>Recent Transactions</h3>
+      <div class="transactions" id="transactionList"></div>
+      <div class="bonus" id="bonus credited to your account">$1</div>
+    </div>
+  </div>
+
+  <!-- Send Payment Form -->
+<div class="card" id="sendCard">
+  <h3>Send Payment</h3>
+  <input type="text" id="sendTo" placeholder="Recipient Email">
+
+  <!-- Amount input with $ -->
+  <div class="amount-wrapper">
+    <span class="currency">$</span>
+    <input type="number" id="sendAmount" placeholder="Amount">
+  </div>
+
+  <button class="btn" onclick="sendMoney()">Send</button>
+</div>
+
+<!-- Receive Payment Form -->
+<div class="card" id="receiveCard" style="display:none;">
+  <h3>Receive Payment</h3>
+  <input type="text" id="receiveFrom" placeholder="Sender Email">
+
+  <!-- Amount input with $ -->
+  <div class="amount-wrapper">
+    <span class="currency">$</span>
+    <input type="number" id="receiveAmount" placeholder="Amount">
+  </div>
+
+  <button class="btn" onclick="receiveMoney()">Receive</button>
+</div>
+
+  </div>
+</div>
+
+<footer>
+  © 2026 Monnstarr Bank. All rights reserved.
+</footer>
+
+<script>
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+if(!currentUser) { window.location.href = "login.html"; }
+
+document.get
